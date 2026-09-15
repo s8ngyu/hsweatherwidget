@@ -8,7 +8,16 @@
 	self.contentView.backgroundColor = UIColor.clearColor;
 	self.gradientLayer = [CAGradientLayer layer];
 	self.gradientLayer.frame = self.contentView.bounds;
-	self.gradientLayer.colors = [NSArray arrayWithObjects: (id)[UIColor colorWithRed:68.0f/255.0f green:138.0f/255.0f blue:183.0f/255.0f alpha:1.0f].CGColor, (id)[UIColor colorWithRed:112.0f/255.0f green:165.0f/255.0f blue:196.0f/255.0f alpha:1.0f].CGColor, nil];
+
+        if (![[NSCalendar currentCalendar] isDate:[[PDDokdo sharedInstance] sunrise] inSameDayAsDate:[[PDDokdo sharedInstance] sunset]]) {
+		self.gradientLayer.colors = [NSArray arrayWithObjects: (id)[UIColor colorWithRed:68.0f/255.0f green:138.0f/255.0f blue:183.0f/255.0f alpha:1.0f].CGColor, (id)[UIColor colorWithRed:112.0f/255.0f green:165.0f/255.0f blue:196.0f/255.0f alpha:1.0f].CGColor, nil];
+	}
+
+        else if ([[NSCalendar currentCalendar] isDate:[[PDDokdo sharedInstance] sunrise] inSameDayAsDate:[[PDDokdo sharedInstance] sunset]]) {
+                self.gradientLayer.colors = [NSArray arrayWithObjects: (id)[UIColor colorWithRed:1.0f/255.0f green:5.0f/255.0f blue:28.0f/255.0f alpha:1.0f].CGColor, (id)[UIColor colorWithRed:49.0f/255.0f green:59.0f/255.0f blue:89.0f/255.0f alpha:1.0f].CGColor, nil];
+        }
+
+
 	[self.contentView.layer insertSublayer:self.gradientLayer atIndex:0];
 
 	[self setCornerRadius: 20];
@@ -67,6 +76,16 @@
 	[super viewWillAppear:animated];
 
 	[[PDDokdo sharedInstance] refreshWeatherData];
+
+        if (![[NSCalendar currentCalendar] isDate:[[PDDokdo sharedInstance] sunrise] inSameDayAsDate:[[PDDokdo sharedInstance] sunset]]) {
+                self.gradientLayer.colors = [NSArray arrayWithObjects: (id)[UIColor colorWithRed:68.0f/255.0f green:138.0f/255.0f blue:183.0f/255.0f alpha:1.0f].CGColor, (id)[UIColor colorWithRed:112.0f/255.0f green:165.0f/255.0f blue:196.0f/255.0f alpha:1.0f].CGColor, nil];
+        }
+
+        else if ([[NSCalendar currentCalendar] isDate:[[PDDokdo sharedInstance] sunrise] inSameDayAsDate:[[PDDokdo sharedInstance] sunset]]) {
+                self.gradientLayer.colors = [NSArray arrayWithObjects: (id)[UIColor colorWithRed:1.0f/255.0f green:5.0f/255.0f blue:28.0f/255.0f alpha:1.0f].CGColor, (id)[UIColor colorWithRed:49.0f/255.0f green:59.0f/255.0f blue:89.0f/255.0f alpha:1.0f].CGColor, nil];
+        }
+
+
 	self.cityLabel.text = [[PDDokdo sharedInstance] currentLocation];
 	self.tempLabel.text = [[PDDokdo sharedInstance] currentTemperature];
 	self.conditionImage.image = [[PDDokdo sharedInstance] currentConditionsImage];
